@@ -2,6 +2,7 @@ package de.otto.customer;
 
 import de.otto.article.Article;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Customer {
@@ -31,9 +32,7 @@ public class Customer {
         return customerCount;
     }
 
-    public Map<String, List<String>> getBoughtArticlesPerCategory() {
-        return boughtArticlesPerCategory;
-    }
+    public Map<String, List<String>> getBoughtArticlesPerCategory() { return boughtArticlesPerCategory; }
 
     public int getWishlistSize() {
         return wishlist.size();
@@ -57,9 +56,13 @@ public class Customer {
     }
 
     public boolean buy(Article article) {
-        ArrayList<String> articles = new ArrayList<>();                     // ausgliedern? wird jedes mal neu instanziiert
-        articles.add(article.getNumber());
-        boughtArticlesPerCategory.put(article.getCategory(), articles);
+        if (boughtArticlesPerCategory.get(article.getCategory()) == null) {
+            ArrayList<String> articles = new ArrayList<>();
+            articles.add(article.getNumber());
+            boughtArticlesPerCategory.put(article.getCategory(), articles);
+        } else {
+            boughtArticlesPerCategory.get(article.getCategory()).add(article.getNumber());
+        }
         return false;
     }
 
